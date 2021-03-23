@@ -165,7 +165,7 @@ class Tool {
   // 根據裝置類型取得Banner廣告ID
   String getBannerAdUnitId() {
     if (Platform.isIOS) {
-      return 'ca-app-pub-5369971011451124/9038437910';
+      return 'ca-app-pub-5369971011451124/5582079063';
     } else if (Platform.isAndroid) {
       return 'ca-app-pub-5369971011451124/9038437910';
     }
@@ -175,7 +175,7 @@ class Tool {
   // 根據裝置類型取得Banner廣告ID
   String getPostBannerAdUnitId() {
     if (Platform.isIOS) {
-      return 'ca-app-pub-5369971011451124/1493121827';
+      return 'ca-app-pub-5369971011451124/1701160915';
     } else if (Platform.isAndroid) {
       return 'ca-app-pub-5369971011451124/1493121827';
     }
@@ -193,6 +193,11 @@ class Tool {
   }
 
   String getRewardAdUintId() {
-    return 'ca-app-pub-5369971011451124/2596166530';
+    if (Platform.isIOS) {
+      return 'ca-app-pub-5369971011451124/6761915909';
+    } else if (Platform.isAndroid) {
+      return 'ca-app-pub-5369971011451124/2596166530';
+    }
+    return null;
   }
 }
