@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:instacard/common/tool.dart';
 import 'package:instacard/components/imageView.dart';
@@ -22,8 +21,6 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-  // interstitialAd
-  PublisherInterstitialAd interstitialAd;
   // ad
   BannerAd ad;
   // 圖片指示器位置
@@ -38,7 +35,6 @@ class _PostCardState extends State<PostCard> {
   void dispose() {
     super.dispose();
     if (ad != null) ad.dispose();
-    if (interstitialAd != null) interstitialAd.dispose();
   }
 
   @override
@@ -52,7 +48,7 @@ class _PostCardState extends State<PostCard> {
         });
     });
     // loading 開啟原文網址的廣告
-    randomAd();
+    // randomAd();
     if (widget.isAds) {
       ad = BannerAd(
           size: AdSize.mediumRectangle,
@@ -69,41 +65,6 @@ class _PostCardState extends State<PostCard> {
       });
     }
     super.initState();
-  }
-
-  void randomAd() {
-    interstitialAd = null;
-    Random rand = new Random();
-    int randomNumber = rand.nextInt(100);
-    if (randomNumber <= 20) {
-      interstitialAd = PublisherInterstitialAd(
-        adUnitId: Tool().getInterstitialAdUniId(),
-        request: PublisherAdRequest(),
-        listener: AdListener(
-          // Called when an ad is successfully received.
-          onAdLoaded: (Ad ad) => print('Ad loaded.'),
-          // Called when an ad request failed.
-          onAdFailedToLoad: (Ad ad, LoadAdError error) {
-            ad.dispose();
-            ad.load();
-            print('Ad failed to load: $error');
-          },
-          // Called when an ad opens an overlay that covers the screen.
-          onAdOpened: (Ad ad) => print('Ad opened.'),
-          // Called when an ad removes an overlay that covers the screen.
-          onAdClosed: (Ad ad) {
-            Tool().launchInBrowser(
-                'https:dcard.tw/f/${widget.post.forumAlias}/p/${widget.post.id}');
-            ad.dispose();
-            randomAd();
-            print('Ad closed.');
-          },
-          // Called when an ad is in the process of leaving the application.
-          onApplicationExit: (Ad ad) => print('Left application.'),
-        ),
-      );
-      interstitialAd.load();
-    }
   }
 
   @override
@@ -257,11 +218,8 @@ class _PostCardState extends State<PostCard> {
               IconButton(
                   icon: Icon(Icons.launch),
                   onPressed: () {
-                    if (interstitialAd != null)
-                      interstitialAd.show();
-                    else
-                      Tool().launchInBrowser(
-                          'https:dcard.tw/f/${widget.post.forumAlias}/p/${widget.post.id}');
+                    Tool().launchInBrowser(
+                        'https:dcard.tw/f/${widget.post.forumAlias}/p/${widget.post.id}');
                   }),
             ],
           ),

@@ -4,8 +4,6 @@ import 'package:instacard/pages/favorite.dart';
 import 'package:instacard/pages/posts.dart';
 import 'package:instacard/pages/setting.dart';
 
-import 'components/post.dart';
-
 // 主框架
 class Layout extends StatefulWidget {
   Layout({Key key, this.defaultForum = ''}) : super(key: key);

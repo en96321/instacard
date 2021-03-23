@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instacard/components/adview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // 設定頁
@@ -90,8 +91,9 @@ class _SettingState extends State<Setting> {
             },
           ),
           title: Text('應用程式版本'),
-          subtitle: Text('1.0.0'),
+          subtitle: Text('1.0.1'),
         ),
+        RewardAdWidget()
       ],
     );
   }

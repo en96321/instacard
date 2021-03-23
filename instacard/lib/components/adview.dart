@@ -2,51 +2,96 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:instacard/common/tool.dart';
 
-class AdView extends StatelessWidget {
-  AdView({Key key}) : super(key: key);
-  final BannerAd ad = BannerAd(
-      size: AdSize.mediumRectangle,
-      adUnitId: Tool().getBannerAdUnitId(),
+class RewardAdWidget extends StatefulWidget {
+  RewardAdWidget({Key key}) : super(key: key);
+
+  @override
+  _RewardAdWidgetState createState() => _RewardAdWidgetState();
+}
+
+class _RewardAdWidgetState extends State<RewardAdWidget> {
+  // 廣告
+  RewardedAd myRewarded;
+  double hp = 0;
+  @override
+  void initState() {
+    myRewarded = RewardedAd(
+      adUnitId: Tool().getRewardAdUintId(),
       request: AdRequest(),
-      listener: AdListener());
+      listener: AdListener(
+        onAdClosed: (Ad ad) {
+          ad.dispose();
+          ad.load();
+        },
+        onRewardedAdUserEarnedReward: (RewardedAd ad, RewardItem reward) {
+          setState(() {
+            hp = 1.0;
+          });
+        },
+      ),
+    );
+    myRewarded.load();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (myRewarded != null) myRewarded.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ad.load();
-    return Stack(
-      children: [
-        Column(children: [
-          AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.face_rounded,
-                  color: Colors.yellow.shade900,
-                  size: 24,
-                ),
-              ),
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('廣告', style: TextStyle(fontSize: 14)),
-                Text(
-                  '廣告小天使',
-                  style: TextStyle(fontSize: 12),
-                )
-              ],
+    return Container(
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            width: 2,
+            color: Colors.grey.shade400,
+          )),
+      child: Column(
+        children: [
+          Center(
+            child: Text(
+              '看廣告補血',
+              style: TextStyle(fontSize: 16),
             ),
           ),
-          SizedBox(
-            width: 320,
-            height: 270,
-            child: Center(
-              child: AdWidget(ad: ad),
-            ),
+          Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+          LinearProgressIndicator(
+            minHeight: 16,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+            value: hp,
           ),
-        ]),
-      ],
+          Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+          Center(
+            child: IconButton(
+                iconSize: 48,
+                icon: myRewarded != null
+                    ? Icon(
+                        Icons.redeem_rounded,
+                        color: Colors.yellow.shade700,
+                      )
+                    : Container(),
+                onPressed: () {
+                  myRewarded.isLoaded().then((value) {
+                    if (value) {
+                      myRewarded.show();
+                    } else {
+                      final snackBar = SnackBar(
+                        content: Text('請稍後在試',
+                            style: TextStyle(color: Colors.white)),
+                        backgroundColor: Colors.black,
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  });
+                }),
+          )
+        ],
+      ),
     );
   }
 }

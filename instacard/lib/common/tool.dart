@@ -191,4 +191,8 @@ class Tool {
     }
     return null;
   }
+
+  String getRewardAdUintId() {
+    return 'ca-app-pub-5369971011451124/2596166530';
+  }
 }

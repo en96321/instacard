@@ -141,9 +141,9 @@ class _PostsBodyState extends State<PostsBody> {
             // 建立成廣告
             if (i % 7 == 0 && i != 0) {
               adsCount++;
-              // posts.add(new PostCard(
-              //   isAds: true,
-              // ));
+              posts.add(new PostCard(
+                isAds: true,
+              ));
               posts.add(new PostCard(
                 post: resPosts[i],
               ));
@@ -189,9 +189,9 @@ class _PostsBodyState extends State<PostsBody> {
                   int nowIndex = baseLength + i;
                   if (nowIndex % 7 == 0) {
                     adsCount++;
-                    // posts.add(new PostCard(
-                    //   isAds: true,
-                    // ));
+                    posts.add(new PostCard(
+                      isAds: true,
+                    ));
                     posts.add(new PostCard(
                       post: resPosts[i],
                     ));
